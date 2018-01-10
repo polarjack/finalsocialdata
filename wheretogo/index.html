@@ -9,7 +9,7 @@
   <title>Simple markers</title>
   <style>
     /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
+         * element that contains the map. */
 
     #map {
       height: 100%;
@@ -28,21 +28,15 @@
 <body>
   <div id="map"></div>
   <script>
-    // $(function () {
-    //   $.getJSON("myjsonfile.json", function (data) {
-    //     console.log(data.table[0])
-    //     console.log("done")
-    //   });
-    // });
+    var map, heatmap, input;
+
+    function toggleHeatmap() {
+      heatmap.setMap(map);
+    }
 
     function initMap() {
-      var myLatLng = {
-        lat: 35.689487,
-        lng: 139.691706
-      };
-
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 11,
         center: {
           lat: 35.689487,
           lng: 139.691706
@@ -50,28 +44,21 @@
         mapTypeId: 'terrain'
       });
 
-      // var marker = new google.maps.Marker({
-      //   position: myLatLng,
-      //   map: map,
-      //   title: 'Hello World!'
-      // });
-
-      $.getJSON("subwaylocation.json", function (data) {
-        data.table.map(i => {
-          i.position.lat = Number(i.position.lat)
-          i.position.lng = Number(i.position.lng)
-
-          var marker = new google.maps.Marker({
-            position: i.position,
-            map: map,
-            title: i.title
-          });
+      $.getJSON("wheretogo.json", function (data) {
+        input = data.table.map(i => {
+          var temp = {}
+          temp.location =  new google.maps.LatLng(i.position.lat, i.position.lng)
+          temp.weight = 3
+          return temp;
         })
+        heatmap = new google.maps.visualization.HeatmapLayer({
+          data: input
+        });
+        heatmap.setMap(map)
+        // heatmap.set('radious', 20)
       });
     }
   </script>
-
-
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClG1COBS6izq7X-_rTqMjp-N01GGNaMSA&libraries=visualization&callback=initMap">
   </script>
 </body>
