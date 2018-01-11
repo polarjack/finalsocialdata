@@ -1,11 +1,5 @@
 {
   "table": [{
-    "title": "景點",
-    "position": {
-      "lat": null,
-      "lng": null
-    }
-  }, {
     "title": "東京大神宮",
     "position": {
       "lat": 35.699977,
